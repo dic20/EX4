@@ -17,18 +17,37 @@ public class RentACat {
 
             switch(userOption) {
                 case 1:
-
+                listCatsForRent(cats);
                 break;
                 case 2:
-
+                String customerName = verifyCustomerID(customers, inScan);
+                if (customerName.equals("Null")) {
+                    System.out.println("That customer doesn't exist!");
+                } else {
+                    String catName = verifyAndRentCat(cats, inScan, customerName); 
+                }
                 break;
                 case 3:
-
+                returnCat(cats, inScan);
                 break;
                 case 4:
                 System.out.println("Closing up shop for the day!");
                 quit = true;
                 break;
+            }
+        }
+    }
+
+    public static void returnCat(ArrayList<Cat> cats, Scanner s) {
+        boolean returned = false;
+        while(!returned) {
+            System.out.print("Return which cat? > ");
+            try {
+                int catID = s.nextInt();
+                s.nextLine();
+                returned = verifyCat(cats, s);
+            } catch (Exception e) {
+                System.out.println("Invalid cat ID");
             }
         }
     }
@@ -67,17 +86,58 @@ public class RentACat {
         return option;
     }
 
-    public static void listCatsForRent() {
+    public static void listCatsForRent(ArrayList<Cat> rentableCats) {
         System.out.println("Cats for Rent");
+        
+        // iterate through cats to see if they are rentable
+        // print them out if they are
+        for (Cat cat : rentableCats) {
+            if (cat.rentable()) {
+                System.out.println(cat.toString());
+            }
+        }
     }
 
-    // verifies that cat wanted exists
-    public static boolean verifyCat(Cat catID) {
-        return true;
+    // verifies that cat wanted exists and then rents it
+    public static String verifyAndRentCat(ArrayList<Cat> cats, Scanner s, String customer) {
+        System.out.print("Cat ID > ");
+        int catID = s.nextInt();
+        s.nextLine();
+        for (Cat cat : cats) {
+            if (cat.getCatID() == catID) {
+                cat.rentCat(customer);
+                return cat.getCatName();
+            }
+        }
+        System.out.println("Invalid cat ID");
+        return "Null";
+    }
+
+    // verifies that cat wanted exists 
+    public static boolean verifyCat(ArrayList<Cat> cats, Scanner s) {
+        System.out.print("Cat ID > ");
+        int catID = s.nextInt();
+        s.nextLine();
+        for (Cat cat : cats) {
+            if (cat.getCatID() == catID) {
+                return true;
+            }
+        }
+        System.out.println("Invalid cat ID");
+        return false;
     }
 
     // verifies taht the customer ID is real
-    public static boolean verifyCustomerID(Customer customerID) {
-        return true;
+    public static String verifyCustomerID(ArrayList<Customer> customers, Scanner s) {
+        System.out.print("Customer ID > ");
+        int customerID = s.nextInt();
+        s.nextLine(); // remove new line character
+
+        for (Customer customer : customers) {
+            if (customerID == customer.getCustomerID()) {
+                return customer.getCustomerName();
+            }
+        }
+        return "Null";
     }
 }

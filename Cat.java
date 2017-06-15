@@ -1,3 +1,5 @@
+import java.text.*;
+
 public class Cat {
     private int ID;
     private String name;
@@ -12,12 +14,21 @@ public class Cat {
         customer = "";
     }
 
+    // if the cat is rentable return true, else false
+    public boolean rentable() {
+        if (rentable) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void rentCat(String wantsToRent) {
         if (rentable) {
             rentable = false;
             customer = wantsToRent;
         } else {
-            System.out.println(name + "has been rented to " + customer);
+            System.out.println("Sorry, " + name + " is not here!");
         }
     }
 
@@ -29,5 +40,26 @@ public class Cat {
         } else {
             System.out.println("That cat was not rented to you...awk");
         }
+    }
+
+    public int getCatID() {
+        return ID;
+    }
+
+    public String getCatName() {
+        return name;
+    }
+
+    public String toString() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        StringBuilder info = new StringBuilder();
+        info.append("ID ");
+        info.append(ID);
+        info.append(". ");
+        info.append(name);
+        info.append(": ");
+        info.append(formatter.format(costPerDay));
+        info.append(" / day");
+        return info.toString();
     }
 }
