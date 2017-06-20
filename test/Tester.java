@@ -33,7 +33,7 @@ public class Tester {
     public void returnCatRentable() {
         Cat cat = new Cat(1, "a", 2.2);
         cat.returnCat();
-        cat.rentCat();
+        cat.rentCat("apple");
         assertFalse(cat.rentable());
     }    
 }
